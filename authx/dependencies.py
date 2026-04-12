@@ -59,7 +59,7 @@ class AuthXDependency(Generic[T]):
         Returns:
             The HTTP request object stored in the authentication dependency.
         """
-        return self._request
+        pass
 
     @property
     def response(self) -> Response:
@@ -70,7 +70,7 @@ class AuthXDependency(Generic[T]):
         Returns:
             The HTTP response object stored in the authentication dependency.
         """
-        return self._response
+        pass
 
     def create_access_token(
         self,
@@ -100,7 +100,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         A string representing the generated access token.
         """
-        return self._security.create_access_token(uid, fresh, headers, expiry, data, audience, *args, **kwargs)
+        pass
 
     def create_refresh_token(
         self,
@@ -128,7 +128,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         A string representing the generated refresh token.
         """
-        return self._security.create_refresh_token(uid, headers, expiry, data, audience, *args, **kwargs)
+        pass
 
     def create_token_pair(
         self,
@@ -160,17 +160,7 @@ class AuthXDependency(Generic[T]):
         Returns:
             TokenResponse with access_token, refresh_token, and token_type.
         """
-        return self._security.create_token_pair(
-            uid=uid,
-            fresh=fresh,
-            headers=headers,
-            access_expiry=access_expiry,
-            refresh_expiry=refresh_expiry,
-            data=data,
-            audience=audience,
-            access_scopes=access_scopes,
-            refresh_scopes=refresh_scopes,
-        )
+        pass
 
     def set_access_cookies(
         self,
@@ -190,7 +180,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         None
         """
-        self._security.set_access_cookies(token=token, response=(response or self._response), max_age=max_age)
+        pass
 
     def set_refresh_cookies(
         self,
@@ -210,7 +200,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         None
         """
-        self._security.set_refresh_cookies(token=token, response=(response or self._response), max_age=max_age)
+        pass
 
     def unset_access_cookies(self, response: Optional[Response] = None) -> None:
         """Remove access token cookies from the HTTP response.
@@ -223,7 +213,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         None
         """
-        self._security.unset_access_cookies(response=(response or self._response))
+        pass
 
     def unset_refresh_cookies(self, response: Optional[Response] = None) -> None:
         """Remove refresh token cookies from the HTTP response.
@@ -236,7 +226,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         None
         """
-        self._security.unset_refresh_cookies(response=(response or self._response))
+        pass
 
     def unset_cookies(self, response: Optional[Response] = None) -> None:
         """Remove all authentication-related cookies from the HTTP response.
@@ -249,7 +239,7 @@ class AuthXDependency(Generic[T]):
         Returns:
         None
         """
-        self._security.unset_cookies(response=(response or self._response))
+        pass
 
     async def get_current_subject(self) -> Optional[T]:
         """Retrieve the currently authenticated subject from the request.
@@ -259,4 +249,4 @@ class AuthXDependency(Generic[T]):
         Returns:
         The authenticated subject if present, otherwise None.
         """
-        return await self._security.get_current_subject(request=self._request)
+        pass

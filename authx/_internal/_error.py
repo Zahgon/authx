@@ -27,15 +27,7 @@ class _ErrorHandler:
         request: Request,
         exc: exceptions.RateLimitExceeded,
     ) -> JSONResponse:
-        return JSONResponse(
-            status_code=429,
-            content={
-                "message": str(exc),
-                "error_type": "RateLimitExceeded",
-                "retry_after": exc.retry_after,
-            },
-            headers={"Retry-After": str(exc.retry_after)},
-        )
+        pass
 
     async def _error_handler(
         self,
@@ -55,20 +47,7 @@ class _ErrorHandler:
         Returns:
             JSONResponse: The JSON response.
         """
-        if message is None:
-            default_message = str(exc)
-            attr_name = f"MSG_{exc.__class__.__name__}"
-            attr_message = getattr(self, attr_name, None)
-            # Use attribute message if available, otherwise use exception message
-            message = attr_message if attr_message is not None else default_message
-
-        return JSONResponse(
-            status_code=status_code,
-            content={
-                "message": message,
-                "error_type": exc.__class__.__name__,
-            },
-        )
+        pass
 
     def _set_app_exception_handler(
         self,
@@ -77,13 +56,7 @@ class _ErrorHandler:
         status_code: int,
         message: Optional[str],
     ) -> None:
-        async def exception_handler_wrapper(request: Request, exc: exceptions.AuthXException) -> JSONResponse:
-            return await self._error_handler(request, exc, status_code, message)
-
-        # Add the exception handler to the FastAPI application
-        # The exception handler will be called when the specified exception is raised, and the status code and message will be returned
-        # The exception handler will return a JSONResponse with the specified status code and message
-        app.exception_handler(exception)(exception_handler_wrapper)
+        pass
 
     def handle_errors(self, app: FastAPI) -> None:
         """Add the `FastAPI.exception_handlers` relative to AuthX exceptions.
@@ -91,75 +64,4 @@ class _ErrorHandler:
         Args:
             app (FastAPI): the FastAPI application to handle errors for
         """
-        self._set_app_exception_handler(app, exception=exceptions.JWTDecodeError, status_code=422, message=None)
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.MissingTokenError,
-            status_code=401,
-            message=self.MSG_TokenError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.MissingCSRFTokenError,
-            status_code=401,
-            message=None,  # Use detailed exception message for better user guidance
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.TokenTypeError,
-            status_code=401,
-            message=self.MSG_TokenTypeError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.RevokedTokenError,
-            status_code=401,
-            message=self.MSG_RevokedTokenError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.TokenRequiredError,
-            status_code=401,
-            message=self.MSG_TokenRequiredError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.FreshTokenRequiredError,
-            status_code=401,
-            message=self.MSG_FreshTokenRequiredError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.AccessTokenRequiredError,
-            status_code=401,
-            message=self.MSG_AccessTokenRequiredError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.RefreshTokenRequiredError,
-            status_code=401,
-            message=self.MSG_RefreshTokenRequiredError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.CSRFError,
-            status_code=401,
-            message=self.MSG_CSRFError,
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.InsufficientScopeError,
-            status_code=403,
-            message=None,  # Use detailed exception message showing required vs provided scopes
-        )
-        self._set_app_exception_handler(
-            app,
-            exception=exceptions.SessionRevoked,
-            status_code=401,
-            message="Session has been revoked",
-        )
-
-        async def rate_limit_wrapper(request: Request, exc: exceptions.RateLimitExceeded) -> JSONResponse:
-            return await self._rate_limit_handler(request, exc)
-
-        app.exception_handler(exceptions.RateLimitExceeded)(rate_limit_wrapper)
+        pass

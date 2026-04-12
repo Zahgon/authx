@@ -35,7 +35,7 @@ class InMemorySessionStore:
         self._sessions: dict[str, SessionInfo] = {}
 
     async def create(self, session: SessionInfo) -> None:
-        self._sessions[session.session_id] = session
+        pass
 
     async def get(self, session_id: str) -> Optional[SessionInfo]:
         return self._sessions.get(session_id)
@@ -48,12 +48,10 @@ class InMemorySessionStore:
                     object.__setattr__(session, key, value)
 
     async def delete(self, session_id: str) -> None:
-        self._sessions.pop(session_id, None)
+        pass
 
     async def list_by_user(self, uid: str) -> list[SessionInfo]:
-        return [s for s in self._sessions.values() if s.uid == uid and s.is_active]
+        pass
 
     async def delete_all_by_user(self, uid: str) -> None:
-        to_remove = [sid for sid, s in self._sessions.items() if s.uid == uid]
-        for sid in to_remove:
-            del self._sessions[sid]
+        pass

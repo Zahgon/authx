@@ -42,61 +42,41 @@ class _CallbackHandler(Generic[T]):
     @property
     def is_model_callback_set(self) -> bool:
         """Check if callback is set for model instance."""
-        return self.callback_get_model_instance is not None
+        pass
 
     @property
     def is_token_callback_set(self) -> bool:
         """Check if callback is set for token."""
-        return self.callback_is_token_in_blocklist is not None
+        pass
 
     def _check_model_callback_is_set(self, ignore_errors: bool = False) -> bool:
         """Check if callback is set for model instance and raise exception if not set."""
-        if self.is_model_callback_set:
-            return True
-        if not ignore_errors:
-            raise self._callback_model_set_exception
-        return False
+        pass
 
     def _check_token_callback_is_set(self, ignore_errors: bool = False) -> bool:
         """Check if callback is set for token and raise exception if not set."""
-        if self.is_token_callback_set:
-            return True
-        if not ignore_errors:
-            raise self._callback_token_set_exception
-        return False
+        pass
 
     def set_callback_get_model_instance(self, callback: ModelCallback[T]) -> None:
         """Set callback for model instance."""
-        self.callback_get_model_instance = callback
+        pass
 
     def set_callback_token_blocklist(self, callback: TokenCallback) -> None:
         """Set callback for token."""
-        self.callback_is_token_in_blocklist = callback
+        pass
 
     def set_subject_getter(self, callback: ModelCallback[T]) -> None:
         """Set the callback to run for subject retrieval and serialization."""
-        self.set_callback_get_model_instance(callback)
+        pass
 
     def set_token_blocklist(self, callback: TokenCallback) -> None:
         """Set the callback to run for validation of revoked tokens."""
-        self.set_callback_token_blocklist(callback)
+        pass
 
     async def _get_current_subject(self, uid: str, **kwargs: ParamSpecKwargs) -> Optional[T]:
         """Get current model instance from callback."""
-        self._check_model_callback_is_set()
-        callback: Optional[ModelCallback[T]] = self.callback_get_model_instance
-        if callback is None:
-            return None
-        if iscoroutinefunction(callback):
-            return await callback(uid, **kwargs)
-        return cast(Optional[T], callback(uid, **kwargs))
+        pass
 
     async def is_token_in_blocklist(self, token: Optional[str], **kwargs: ParamSpecKwargs) -> bool:
         """Check if token is in blocklist."""
-        if self._check_token_callback_is_set(ignore_errors=True):
-            callback: Optional[TokenCallback] = self.callback_is_token_in_blocklist
-            if callback is not None and token is not None:
-                if iscoroutinefunction(callback):
-                    return await callback(token, **kwargs)
-                return cast(bool, callback(token, **kwargs))
-        return False
+        pass

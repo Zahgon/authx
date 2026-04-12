@@ -79,7 +79,7 @@ class TokenPayload(BaseModel):
 
     @property
     def _additional_fields(self) -> set[str]:
-        return set(self.__dict__) - set(self.model_fields)
+        pass
 
     @property
     def extra_dict(self) -> dict[str, Any]:
@@ -88,7 +88,7 @@ class TokenPayload(BaseModel):
         Returns:
             A dictionary containing additional fields beyond the model's defined schema.
         """
-        return self.model_dump(include=self._additional_fields)
+        pass
 
     @property
     def issued_at(self) -> datetime.datetime:
@@ -102,12 +102,7 @@ class TokenPayload(BaseModel):
         Raises:
             TypeError: If the issued-at claim is not a float, int, or datetime object.
         """
-        if isinstance(self.iat, (float, int)):
-            return datetime.datetime.fromtimestamp(self.iat, tz=datetime.timezone.utc)
-        elif isinstance(self.iat, datetime.datetime):
-            return self.iat
-        else:
-            raise TypeError("'iat' claim should be of type float | int | datetime.datetime")
+        pass
 
     @property
     def expiry_datetime(self) -> datetime.datetime:
@@ -121,14 +116,7 @@ class TokenPayload(BaseModel):
         Raises:
             TypeError: If the expiration claim is not a float, int, datetime, or timedelta object.
         """
-        if isinstance(self.exp, datetime.datetime):  # pragma: no cover
-            return self.exp  # pragma: no cover
-        elif isinstance(self.exp, datetime.timedelta):
-            return self.issued_at + self.exp
-        elif isinstance(self.exp, (float, int)):
-            return datetime.datetime.fromtimestamp(self.exp, tz=datetime.timezone.utc)  # pragma: no cover
-        else:
-            raise TypeError("'exp' claim should be of type float | int | datetime.datetime")
+        pass
 
     @property
     def time_until_expiry(self) -> datetime.timedelta:
@@ -139,7 +127,7 @@ class TokenPayload(BaseModel):
         Returns:
             A timedelta object representing the remaining time until token expiration.
         """
-        return self.expiry_datetime - get_now()
+        pass
 
     @property
     def time_since_issued(self) -> datetime.timedelta:
@@ -150,16 +138,12 @@ class TokenPayload(BaseModel):
         Returns:
             A timedelta object representing the time elapsed since token issuance.
         """
-        return get_now() - self.issued_at
+        pass
 
     @field_validator("exp", "nbf", mode="before")
     @classmethod
     def _set_default_ts(cls, value: Union[float, int, datetime.datetime, datetime.timedelta]) -> Union[float, int]:
-        if isinstance(value, datetime.datetime):
-            return value.timestamp()
-        elif isinstance(value, datetime.timedelta):
-            return (get_now() + value).timestamp()
-        return value
+        pass
 
     def has_scopes(self, *scopes: str, all_required: bool = True) -> bool:
         """Check if the token contains the specified scopes.
@@ -197,7 +181,7 @@ class TokenPayload(BaseModel):
             >>> payload.has_scopes("read", "admin", all_required=False)
             True
         """
-        return has_required_scopes(list(scopes), self.scopes, all_required=all_required)
+        pass
 
     def encode(
         self,
@@ -367,44 +351,4 @@ class RequestToken(BaseModel):
             FreshTokenRequiredError: If a fresh token is required but not provided.
             CSRFError: If CSRF token validation fails.
         """
-        if algorithms is None:  # pragma: no cover
-            algorithms = ["HS256"]  # pragma: no cover
-        try:
-            decoded_token = decode_token(
-                token=self.token,
-                key=key,
-                algorithms=algorithms,
-                verify=verify_jwt,
-                audience=audience,
-                issuer=issuer,
-            )
-            payload = TokenPayload.model_validate(decoded_token)
-        except JWTDecodeError as e:
-            raise JWTDecodeError(*e.args) from e
-        except ValidationError as e:
-            raise JWTDecodeError(*e.args) from e
-
-        if verify_type and (self.type != payload.type):
-            error_msg = f"'{self.type}' token required, '{payload.type}' token received"
-            if self.type == "access":
-                raise AccessTokenRequiredError(error_msg)
-            elif self.type == "refresh":  # pragma: no cover
-                raise RefreshTokenRequiredError(error_msg)  # pragma: no cover
-            raise TokenTypeError(error_msg)  # pragma: no cover
-
-        if verify_fresh and not payload.fresh:
-            raise FreshTokenRequiredError("Fresh token required")
-
-        if verify_csrf and self.location == "cookies":
-            if self.csrf is None:
-                raise CSRFError(
-                    f"Missing CSRF token in request. Include CSRF token from the "
-                    f"'{self.location}' in the 'X-CSRF-TOKEN' header. "
-                    f"To disable CSRF protection, set JWT_COOKIE_CSRF_PROTECT=False."
-                )
-            if payload.csrf is None:
-                raise CSRFError("Cookies token missing CSRF claim")  # pragma: no cover
-            if not compare_digest(self.csrf, payload.csrf):
-                raise CSRFError("CSRF token mismatch")
-
-        return payload
+        pass

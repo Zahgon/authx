@@ -97,43 +97,30 @@ class AuthXConfig(BaseSettings):
     @property
     def is_algo_symmetric(self) -> bool:
         """Check if the JWT_ALGORITHM is a symmetric encryption algorithm."""
-        return self.JWT_ALGORITHM in get_default_algorithms() and self.JWT_ALGORITHM not in requires_cryptography
+        pass
 
     @property
     def is_algo_asymmetric(self) -> bool:
         """Check if the JWT_ALGORITHM is an asymmetric encryption algorithm."""
-        return self.JWT_ALGORITHM in get_default_algorithms() and self.JWT_ALGORITHM in requires_cryptography
+        pass
 
     def _get_key(self, crypto_value: Optional[str]) -> str:
         """Get the key for the algorithm type (symmetric or asymmetric) and the algorithm."""
-        if self.is_algo_symmetric:
-            key = self.JWT_SECRET_KEY
-        elif self.is_algo_asymmetric:
-            key = crypto_value
-        else:
-            raise BadConfigurationError(
-                f"JWT_ALGORITHM {self.JWT_ALGORITHM} is not supported, please use one of {get_default_algorithms()}",
-            )
-
-        if key is None:
-            raise BadConfigurationError(
-                f"JWT_ALGORITHM {self.JWT_ALGORITHM} requires a key, please set JWT_SECRET_KEY or JWT_PUBLIC_KEY and JWT_PRIVATE_KEY",
-            )
-        return key
+        pass
 
     def has_location(self, location: str) -> bool:
         """Check if the token location is enabled."""
-        return location in self.JWT_TOKEN_LOCATION
+        pass
 
     @property
     def private_key(self) -> str:
         """Private key to encode token."""
-        return self._get_key(self.JWT_PRIVATE_KEY)
+        pass
 
     @property
     def public_key(self) -> str:
         """Public key to decode token."""
-        return self._get_key(self.JWT_PUBLIC_KEY)
+        pass
 
     @property
     def previous_public_key(self) -> Optional[str]:
@@ -141,8 +128,4 @@ class AuthXConfig(BaseSettings):
 
         Returns None when no previous key is configured.
         """
-        if self.is_algo_symmetric:
-            return self.JWT_PREVIOUS_SECRET_KEY
-        elif self.is_algo_asymmetric:
-            return self.JWT_PREVIOUS_PUBLIC_KEY
-        return None
+        pass

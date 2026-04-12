@@ -35,18 +35,7 @@ def match_scope(required: str, provided: str) -> bool:
         >>> match_scope("admin:users:edit", "admin:*")
         True
     """
-    # Exact match
-    if required == provided:
-        return True
-
-    # Wildcard match: "admin:*" should match "admin", "admin:users", "admin:users:edit"
-    if provided.endswith(":*"):
-        prefix = provided[:-1]  # Remove the "*" to get "admin:"
-        namespace = provided[:-2]  # Remove ":*" to get "admin"
-        # Match if required starts with "admin:" or equals "admin"
-        return required.startswith(prefix) or required == namespace
-
-    return False
+    pass
 
 
 def has_required_scopes(
@@ -75,19 +64,7 @@ def has_required_scopes(
         >>> has_required_scopes(["users:read"], ["users:*"], all_required=True)
         True
     """
-    if provided is None:
-        return len(required) == 0
-
-    def scope_satisfied(req: str) -> bool:
-        """Check if a single required scope is satisfied by any provided scope."""
-        return any(match_scope(req, prov) for prov in provided)
-
-    if all_required:
-        # All required scopes must be satisfied
-        return all(scope_satisfied(req) for req in required)
-    else:
-        # At least one required scope must be satisfied
-        return any(scope_satisfied(req) for req in required)
+    pass
 
 
 def normalize_scope(scope: str) -> str:
@@ -99,7 +76,7 @@ def normalize_scope(scope: str) -> str:
     Returns:
         The normalized scope string.
     """
-    return scope.strip().lower()
+    pass
 
 
 def parse_scope_string(scope_string: str, delimiter: str = " ") -> list[str]:
@@ -121,6 +98,4 @@ def parse_scope_string(scope_string: str, delimiter: str = " ") -> list[str]:
         >>> parse_scope_string("users:read users:write")
         ["users:read", "users:write"]
     """
-    if not scope_string:
-        return []
-    return [s.strip() for s in scope_string.split(delimiter) if s.strip()]
+    pass

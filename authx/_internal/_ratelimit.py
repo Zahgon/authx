@@ -37,31 +37,19 @@ class InMemoryBackend:
         self._store: dict[str, tuple[int, float]] = {}
 
     async def increment(self, key: str, window: int) -> int:
-        now = time.monotonic()
-        entry = self._store.get(key)
-        if entry is None or now - entry[1] >= window:
-            self._store[key] = (1, now)
-            return 1
-        count = entry[0] + 1
-        self._store[key] = (count, entry[1])
-        return count
+        pass
 
     async def reset(self, key: str) -> None:
-        self._store.pop(key, None)
+        pass
 
     def _cleanup(self, window: int) -> None:
         """Remove expired entries. Call periodically if memory is a concern."""
-        now = time.monotonic()
-        expired = [k for k, (_, ts) in self._store.items() if now - ts >= window]
-        for k in expired:
-            del self._store[k]
+        pass
 
 
 def _default_key_func(request: Request) -> str:
     """Extract client IP from request as the default rate limit key."""
-    if request.client is not None:
-        return f"ratelimit:{request.client.host}"
-    return "ratelimit:unknown"
+    pass
 
 
 class RateLimiter:
